@@ -17,6 +17,12 @@ declare global {
 			email?: string;
 			password?: string;
 		}
+
+		interface FormSuccess {
+			firstName?: string;
+			lastName?: string;
+			email?: string;
+		}
 	}
 }
 
