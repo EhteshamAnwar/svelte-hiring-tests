@@ -46,7 +46,7 @@
         }
         
 
-        console.log('formData', formData);
+        
         if(validData){
             // TODO: Implement success state management
             successMessage.firstName = formData.firstName;
@@ -57,7 +57,7 @@
                 lastName: '',
                 email: '',
                 password: '',
-            }
+            };
         }
     }
 
