@@ -6,10 +6,43 @@
     }
 
     export let items: CarouselItem[] = [];
+
+    $: currentIndex = 0;
+    //function for next slide
+    const nextSlide = () => {
+        currentIndex = ( currentIndex + 1 ) % items.length ;
+    }
+    // function for prev slide
+    const prevSlide = () => {
+        currentIndex = ( currentIndex - 1 + items.length ) % items.length;
+    }
+    //function for specific slide
+    const goToSlide = (index: number) => {
+        currentIndex = index;
+    }
+
 </script>
 
 <div class="carousel">
     <!-- Carousel structure goes here -->
+     <div class="carousel__container">
+        <div class="carousel__track" style="transform: translateX(-{currentIndex * 100}%)" >
+            {#each items as item }
+                <div class="carousel__slide">
+                    <img class="carousel__image" src={item.src} alt={item.alt} />
+                </div>
+            {/each}
+        </div>
+        <button class="carousel__arrow carousel__arrow--left" on:click={prevSlide}> &lt;</button>
+        <button class="carousel__arrow carousel__arrow--right" on:click={nextSlide}> &gt;</button>
+
+        <div class="carousel__dots">
+            {#each items as item ,index }
+                <button class="carousel__dot {currentIndex === index ? 'carousel__dot--active' :''}"  on:click={()=>goToSlide(index)}></button>
+            {/each}
+        </div>
+
+     </div>
 </div>
 
 <style>
@@ -42,6 +75,7 @@
         height: 100%;
         object-fit: cover;
     }
+
 
     .carousel__arrow {
         position: absolute;
