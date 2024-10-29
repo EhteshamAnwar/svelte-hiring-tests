@@ -1,8 +1,11 @@
-// src/routes/items/[id]/+page.svelte
 <script>
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
   
+  import {itemsStore} from '$lib/stores/itemStore';
+  import {onMount} from 'svelte';
+    import { applyAction } from '$app/forms';
+
   // Get the ID from the URL parameter
   $: id = $page.params.id;
   
@@ -12,12 +15,30 @@
     title: `Item ${id}`,
     description: `This is the detailed description for item ${id}. The candidate needs to implement proper navigation to get here and return to the home page.`
   };
+
+  $: {
+    item.id = items.find(index => index.id === Number(id))?.id;
+    item.title = items.find(index => index.id === Number(id))?.title;
+    item.description = items.find(index => index.id === Number(id))?.description;
+  }
+  /**
+     * @type {any[]}
+     */
+  let items = []; 
+  const unsubscribe = itemsStore.subscribe(value => {
+    items = value;
+  })
   
   function goBack() {
     // TODO: Student needs to implement navigation back to home
     // Uncomment and fix this:
-    // goto('/');
+    goto('/');
   }
+  onMount(()=>{
+    return () => {
+      unsubscribe();
+    } 
+  })
 </script>
 
 <div class="container">

@@ -1,11 +1,23 @@
-<script>
+<script lang='ts'>
   import ItemCard from '$lib/components/ItemCard.svelte';
+  import { itemsStore } from '$lib/stores/itemStore';
+  import { onMount } from 'svelte'; 
   
-  const items = [
-    { id: 1, title: "Item 1", description: "First item description" },
-    { id: 2, title: "Item 2", description: "Second item description" },
-    { id: 3, title: "Item 3", description: "Third item description" }
-  ];
+  let items: App.Item[] = [];
+
+  const unsubscribe = itemsStore.subscribe(value => {
+    items = value
+  })
+
+  onMount(() =>{
+
+    //cleanup
+    return () => {
+      unsubscribe();
+    }
+  });
+
+
 </script>
 
 <div class="container">
